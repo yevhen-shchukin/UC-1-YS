@@ -1,3 +1,5 @@
+using UC1Api.Bl.Interfaces;
+using UC1Api.Bl;
 using UC1Api.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddSwaggerGen();
 // Register HttpClient and SampleController
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<CountriesController>();
+builder.Services.AddTransient<ICountriesBl, CountriesBl>();
+
 
 var app = builder.Build();
 

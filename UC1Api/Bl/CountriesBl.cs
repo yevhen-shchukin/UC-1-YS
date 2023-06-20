@@ -19,13 +19,13 @@ public class CountriesBl : ICountriesBl
 				.FindAll(country => country.Population < population * 1000000);
 	}
 
-	public List<Country> SortByName(List<Country> countries, string ascentOrDescend)
+	public List<Country> SortByName(List<Country> countries, SortAscDesc ascentOrDescend)
 	{
-		if (ascentOrDescend.Equals("ascend", StringComparison.OrdinalIgnoreCase))
+		if (ascentOrDescend == SortAscDesc.Ascend)
 		{
 			countries = countries.OrderBy(q => q.Name?.Common).ToList();
 		}
-		else if (ascentOrDescend.Equals("descend", StringComparison.OrdinalIgnoreCase))
+		else if (ascentOrDescend == SortAscDesc.Descend)
 		{
 			countries = countries.OrderByDescending(q => q.Name?.Common).ToList();
 		}
