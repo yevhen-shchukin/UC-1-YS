@@ -1,0 +1,153 @@
+User
+Hello, I have next class written in C#:
+
+using UC1Api.Bl.Interfaces;
+using UC1Api.Dto;
+
+namespace UC1Api.Bl;
+
+public class CountriesBl : ICountriesBl
+{
+	public List<Country> FilterByName(List<Country> countries, string searchName)
+	{
+		return
+			countries
+				.FindAll(country => country.Name?.Common?.Contains(searchName, StringComparison.InvariantCultureIgnoreCase) == true);
+	}
+
+	public List<Country> FilterByPopulation(List<Country> countries, int population)
+	{
+		return
+			countries
+				.FindAll(country => country.Population < population * 1000000);
+	}
+
+	public List<Country> SortByName(List<Country> countries, SortAscDesc ascentOrDescend)
+	{
+		if (ascentOrDescend == SortAscDesc.Ascend)
+		{
+			countries = countries.OrderBy(q => q.Name?.Common).ToList();
+		}
+		else if (ascentOrDescend == SortAscDesc.Descend)
+		{
+			countries = countries.OrderByDescending(q => q.Name?.Common).ToList();
+		}
+
+		return countries;
+	}
+
+	public List<Country> GetRecordsNumber(List<Country> countries, int recordsNumber)
+	{
+		return countries.Take(recordsNumber).ToList();
+	}
+}
+
+Could you please cover it with unit tests? Please use Nunit and FluentAssertions
+ChatGPT
+Certainly! Here's an example of how you can write unit tests using NUnit and FluentAssertions to cover the provided CountriesBl class:
+
+csharp
+Copy code
+using FluentAssertions;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using UC1Api.Bl;
+using UC1Api.Dto;
+
+namespace UC1Api.Tests
+{
+    [TestFixture]
+    public class CountriesBlTests
+    {
+        private CountriesBl _countriesBl;
+        private List<Country> _countries;
+
+        [SetUp]
+        public void Setup()
+        {
+            _countriesBl = new CountriesBl();
+            _countries = new List<Country>
+            {
+                new Country { Name = new Name { Common = "United States" }, Population = 331002651 },
+                new Country { Name = new Name { Common = "Canada" }, Population = 37742154 },
+                new Country { Name = new Name { Common = "Australia" }, Population = 25499884 }
+            };
+        }
+
+        [Test]
+        public void FilterByName_ShouldReturnMatchingCountries()
+        {
+            // Arrange
+            string searchName = "united";
+
+            // Act
+            var filteredCountries = _countriesBl.FilterByName(_countries, searchName);
+
+            // Assert
+            filteredCountries.Should().HaveCount(1);
+            filteredCountries.Should().Contain(c => c.Name?.Common.Equals("United States", StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        [Test]
+        public void FilterByPopulation_ShouldReturnCountriesWithLessPopulation()
+        {
+            // Arrange
+            int population = 30; // In millions
+
+            // Act
+            var filteredCountries = _countriesBl.FilterByPopulation(_countries, population);
+
+            // Assert
+            filteredCountries.Should().HaveCount(2);
+            filteredCountries.Should().Contain(c => c.Name?.Common.Equals("Canada"));
+            filteredCountries.Should().Contain(c => c.Name?.Common.Equals("Australia"));
+        }
+
+        [Test]
+        public void SortByName_ShouldReturnCountriesSortedByNameInAscendingOrder()
+        {
+            // Arrange
+            var expectedOrder = new List<string> { "Australia", "Canada", "United States" };
+
+            // Act
+            var sortedCountries = _countriesBl.SortByName(_countries, SortAscDesc.Ascend);
+
+            // Assert
+            sortedCountries.Should().HaveCount(3);
+            sortedCountries.Should().BeInAscendingOrder(c => c.Name?.Common);
+            sortedCountries.Should().ContainInOrder(expectedOrder);
+        }
+
+        [Test]
+        public void SortByName_ShouldReturnCountriesSortedByNameInDescendingOrder()
+        {
+            // Arrange
+            var expectedOrder = new List<string> { "United States", "Canada", "Australia" };
+
+            // Act
+            var sortedCountries = _countriesBl.SortByName(_countries, SortAscDesc.Descend);
+
+            // Assert
+            sortedCountries.Should().HaveCount(3);
+            sortedCountries.Should().BeInDescendingOrder(c => c.Name?.Common);
+            sortedCountries.Should().ContainInOrder(expectedOrder);
+        }
+
+        [Test]
+        public void GetRecordsNumber_ShouldReturnLimitedNumberOfCountries()
+        {
+            // Arrange
+            int recordsNumber = 2;
+
+            // Act
+            var limitedCountries = _countriesBl.GetRecordsNumber(_countries, recordsNumber);
+
+            // Assert
+            limitedCountries.Should().HaveCount(2);
+            limitedCountries.Should().Contain(c => c.Name?.Common.Equals("United States"));
+            limitedCountries.Should().Contain(c => c.Name?.Common.Equals("Canada"));
+        }
+    }
+}
+In the above code, each test method corresponds to one of the methods in the CountriesBl class. The Arrange-Act-Assert pattern is followed, where you set up the necessary data, perform the operation, and then assert
