@@ -1,0 +1,15 @@
+- sonarcloud.io asks me to insert "your clean build command". What it should be for .NET web api?
+
+- To perform a clean build for a .NET Web API project on SonarCloud, you can use the following command:
+
+Copy code
+dotnet clean && dotnet build
+This command consists of two parts:
+
+dotnet clean: This command cleans the output directories and removes all intermediate build files. It ensures that the project is built from scratch without any artifacts from previous builds.
+
+dotnet build: This command builds the .NET Web API project. It compiles the source code, resolves dependencies, and generates the necessary output files.
+
+By combining both commands with the && operator, you can execute them sequentially. This approach ensures that the project is cleaned before initiating the build process.
+
+Make sure you run this command in the root directory of your .NET Web API project.
