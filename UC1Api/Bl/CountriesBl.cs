@@ -29,12 +29,12 @@ public class CountriesBl : ICountriesBl
 		{
 			countries = countries.OrderByDescending(q => q.Name?.Common).ToList();
 		}
-		else
-		{
-			throw new ArgumentException("Invalid sort order. Please specify 'ascend' or 'descend'.");
-		}
 
 		return countries;
 	}
 
+	public List<Country> GetRecordsNumber(List<Country> countries, int recordsNumber)
+	{
+		return countries.Take(recordsNumber).ToList();
+	}
 }
