@@ -7,6 +7,8 @@ namespace UC1Api.Bl.Interfaces
 		List<Country> FilterByName(List<Country> countries, string searchName);
 
 		List<Country> FilterByPopulation(List<Country> countries, int population);
+
+		List<Country> SortByName(List<Country> countries, string ascentOrDescend);
 	}
 }
 
