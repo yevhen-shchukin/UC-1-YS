@@ -11,4 +11,11 @@ public class CountriesBl : ICountriesBl
 			countries
 				.FindAll(country => country.Name?.Common?.Contains(searchName, StringComparison.InvariantCultureIgnoreCase) == true);
 	}
+
+	public List<Country> FilterByPopulation(List<Country> countries, int population)
+	{
+		return
+			countries
+				.FindAll(country => country.Population < population * 1000000);
+	}
 }
