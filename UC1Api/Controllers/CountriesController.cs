@@ -8,18 +8,21 @@ namespace UC1Api.Controllers;
 public class CountriesController : ControllerBase
 {
 	private readonly HttpClient _httpClient;
+	private readonly string? _apiUrl;
 
-	public CountriesController(IHttpClientFactory httpClientFactory)
+	public CountriesController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
 	{
+		if (httpClientFactory == null) throw new ArgumentNullException(nameof(httpClientFactory));
+		if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+
 		_httpClient = httpClientFactory.CreateClient();
+		_apiUrl = configuration.GetSection("ApiSettings:CountriesUrl").Value;
 	}
 
 	[HttpGet]
 	public async Task<IActionResult> Get(string? p1, int? p2, string? p3)
 	{
-		var apiUrl = "https://restcountries.com/v3.1/all";
-
-		var response = await _httpClient.GetAsync(apiUrl);
+		var response = await _httpClient.GetAsync(_apiUrl);
 
 		if (response.IsSuccessStatusCode)
 		{

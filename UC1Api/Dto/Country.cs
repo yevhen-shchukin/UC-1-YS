@@ -2,6 +2,6 @@
 
 public class Country
 {
-	public CountryName Name { get; set; }
-	public string Region { get; set; }
+	public CountryName? Name { get; set; }
+	public string? Region { get; set; }
 }
