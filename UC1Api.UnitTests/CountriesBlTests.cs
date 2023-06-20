@@ -34,7 +34,7 @@ namespace UC1Api.UnitTests
 
 			// Assert
 			filteredCountries.Should().HaveCount(1);
-			filteredCountries.Should().Contain(c => c.Name.Common.Equals("United States", StringComparison.InvariantCultureIgnoreCase));
+			filteredCountries.Should().Contain(c => c.Name!.Common!.Equals("United States", StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		[Test]
@@ -48,8 +48,8 @@ namespace UC1Api.UnitTests
 
 			// Assert
 			filteredCountries.Should().HaveCount(2);
-			filteredCountries.Should().Contain(c => c.Name.Common.Equals("Canada"));
-			filteredCountries.Should().Contain(c => c.Name.Common.Equals("Australia"));
+			filteredCountries.Should().Contain(c => c.Name!.Common!.Equals("Canada"));
+			filteredCountries.Should().Contain(c => c.Name!.Common!.Equals("Australia"));
 		}
 
 		[Test]
@@ -63,7 +63,7 @@ namespace UC1Api.UnitTests
 
 			// Assert
 			sortedCountries.Should().HaveCount(3);
-			sortedCountries.Should().BeInAscendingOrder(c => c.Name.Common);
+			sortedCountries.Should().BeInAscendingOrder(c => c.Name!.Common!);
 			//sortedCountries.Should().ContainInOrder(expectedOrder);
 		}
 
@@ -78,7 +78,7 @@ namespace UC1Api.UnitTests
 
 			// Assert
 			sortedCountries.Should().HaveCount(3);
-			sortedCountries.Should().BeInDescendingOrder(c => c.Name.Common);
+			sortedCountries.Should().BeInDescendingOrder(c => c.Name!.Common!);
 			//sortedCountries.Should().ContainInOrder(expectedOrder);
 		}
 
@@ -93,8 +93,8 @@ namespace UC1Api.UnitTests
 
 			// Assert
 			limitedCountries.Should().HaveCount(2);
-			limitedCountries.Should().Contain(c => c.Name.Common.Equals("United States"));
-			limitedCountries.Should().Contain(c => c.Name.Common.Equals("Canada"));
+			limitedCountries.Should().Contain(c => c.Name!.Common!.Equals("United States"));
+			limitedCountries.Should().Contain(c => c.Name!.Common!.Equals("Canada"));
 		}
 	}
 }
